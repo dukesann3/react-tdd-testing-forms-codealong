@@ -37,9 +37,44 @@ test("checkbox appears as unchecked when user clicks a second time", () => {
 });
 
 // Size select element
+test("'size select element initially displays 'Small'", () => {
+  render(<App />);
+
+  const sizeSelect = screen.getByLabelText(/select size/i);
+  expect(sizeSelect).toHaveDisplayValue("Small");
+
+})
 
 // "Your Selection" text
+test('select Size dropdown displays the user\'s selected value', () => {
+  render(<App />);
+
+  const sizeSelect = screen.getByLabelText(/select size/i);
+
+  userEvent.selectOptions(sizeSelect, "medium");
+  expect(sizeSelect).toHaveDisplayValue('Medium');
+  userEvent.selectOptions(sizeSelect, "large");
+  expect(sizeSelect).toHaveDisplayValue('Large');
+
+})
 
 // "Contact Info" text box
+test("'Your Selection' message initially displays 'small cheese'", ()=>{
+  render(<App />);
+
+  expect(screen.getByText(/small cheese/i)).toBeInTheDocument();
+})
 
 // Submit Order button
+test("selecting options updates the 'Your selection' message", ()=>{
+  render(<App />);
+
+  const pepperoniInput = screen.getByLabelText(/pepperoni/i);
+  const sizeSelect = screen.getByLabelText(/select size/i);
+
+  userEvent.click(pepperoniInput);
+  userEvent.selectOptions(sizeSelect, "medium");
+
+  expect(screen.getByText(/medium pepperoni/i)).toBeInTheDocument();
+
+})
